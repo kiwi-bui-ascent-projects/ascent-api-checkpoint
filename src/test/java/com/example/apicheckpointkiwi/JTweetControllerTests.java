@@ -67,4 +67,12 @@ public class JTweetControllerTests {
         mockMvc.perform(get("/tweets?author=rob&date=2021-05-17"))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void getTweets_withArgs_noContent_returns204() throws Exception {
+        when(jTweetService.getTweets(anyString(), anyString())).thenReturn(new JTweets(jTweets));
+
+        mockMvc.perform(get("/tweets?author=rob&date=2021-05-17"))
+                .andExpect(status().isOk());
+    }
 }
