@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -26,13 +27,19 @@ public class JTweetControllerTests {
     JTweetService jTweetService;
 
     List<JTweet> jTweets;
+    List<String> authors = new ArrayList<String>() {
+        {
+            add("peter");
+            add("rob");
+        }
+    };
 
     @BeforeEach
     void setUp() {
         jTweets = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
-            jTweets.add(new JTweet(i, "Kiwi", "Tweet" + i));
+            jTweets.add(new JTweet(i, authors.get(i % 2), "Tweet" + i));
         }
     }
 
@@ -51,5 +58,13 @@ public class JTweetControllerTests {
 
         mockMvc.perform(get("/tweets"))
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void getTweets_withArgs_returnsTweets() throws Exception {
+        when(jTweetService.getTweets(anyString(), anyString())).thenReturn(new JTweets(jTweets));
+
+        mockMvc.perform(get("/tweets?author=rob&date=2021-05-17"))
+                .andExpect(status().isOk());
     }
 }
