@@ -2,11 +2,21 @@ package com.example.apicheckpointkiwi;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class JTweetService {
 
+    JTweetsRepository jTweetsRepository;
+
+    public JTweetService(JTweetsRepository jTweetsRepository) {
+        this.jTweetsRepository = jTweetsRepository;
+    }
+
     public JTweets getTweets() {
-        return null;
+        List<JTweet> tweets = jTweetsRepository.findAll();
+
+        return new JTweets(tweets);
     }
 
     public JTweets getTweets(String author, String date) {
