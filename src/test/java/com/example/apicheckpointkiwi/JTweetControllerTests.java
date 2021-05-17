@@ -103,7 +103,7 @@ public class JTweetControllerTests {
 
     @Test
     void getTweet_returnsTweet() throws Exception {
-        when(jTweetService.getTweet(anyLong())).thenReturn(jTweet);
+        when(jTweetService.getTweet(anyLong())).thenReturn(java.util.Optional.ofNullable(jTweet));
 
         mockMvc.perform(get("/tweets/4"))
                 .andExpect(status().isOk())

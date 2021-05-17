@@ -4,6 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/tweets")
 public class JTweetController {
@@ -36,8 +38,8 @@ public class JTweetController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<JTweet> getTweet(@PathVariable long id) {
-        JTweet jTweet = jTweetService.getTweet(id);
+    public ResponseEntity<Optional<JTweet>> getTweet(@PathVariable long id) {
+        Optional<JTweet> jTweet = jTweetService.getTweet(id);
 
         return jTweet == null ? ResponseEntity.noContent().build() : ResponseEntity.ok(jTweet);
     }

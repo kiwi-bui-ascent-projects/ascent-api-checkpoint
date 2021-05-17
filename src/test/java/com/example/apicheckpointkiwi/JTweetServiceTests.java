@@ -68,7 +68,7 @@ public class JTweetServiceTests {
     void getTweets_withArgs_noContent_returnsEmptyList() {
         when(jTweetsRepository.findByAuthorAndLocalDate(anyString(), anyString())).thenReturn(new ArrayList<>());
 
-        assertThat(jTweetService.getTweets("kiwi", "2021-05-17")).isNull();
+        assertThat(jTweetService.getTweets("kiwi", "2021-05-17").isEmpty()).isTrue();
     }
 
     @Test
@@ -83,5 +83,23 @@ public class JTweetServiceTests {
         assertThatThrownBy(() -> {
             jTweetService.addTweet(new JTweet(-1,"", ""));
         }).isInstanceOf(InvalidTweetException.class);
+    }
+
+    @Test
+    void getTweet_returnsTweet() {
+        long id = 4;
+
+        when(jTweetsRepository.findById(id)).thenReturn(java.util.Optional.ofNullable(jTweet));
+
+        assertThat(jTweetService.getTweet(id)).isNotNull();
+    }
+
+    @Test
+    void getTweet_noContent_returnsNull() {
+        long id = 4;
+
+        when(jTweetsRepository.findById(id)).thenReturn(java.util.Optional.empty());
+
+        assertThat(jTweetService.getTweet(id)).isEmpty();
     }
 }
