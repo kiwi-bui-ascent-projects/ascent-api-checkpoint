@@ -2,23 +2,39 @@ package com.example.apicheckpointkiwi;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class JTweetService {
 
+    JTweetsRepository jTweetsRepository;
+
+    public JTweetService(JTweetsRepository jTweetsRepository) {
+        this.jTweetsRepository = jTweetsRepository;
+    }
+
     public JTweets getTweets() {
-        return null;
+        List<JTweet> tweets = jTweetsRepository.findAll();
+
+        return new JTweets(tweets);
     }
 
     public JTweets getTweets(String author, String date) {
-        return null;
+        List<JTweet> tweets = jTweetsRepository.findByAuthorAndLocalDate(author, date);
+
+        return new JTweets(tweets);
     }
 
     public JTweet addTweet(JTweet jTweet) {
-        return null;
+        if (jTweet.getId() < 0 || jTweet.getAuthor() == "" || jTweet.getBody() == "") {
+            throw new InvalidTweetException("Invalid Tweet");
+        }
+        return jTweetsRepository.save(jTweet);
     }
 
-    public JTweet getTweet(long id) {
-        return null;
+    public Optional<JTweet> getTweet(long id) {
+        return jTweetsRepository.findById(id);
     }
 
     public JTweet updateTweet(long id, JTweetUpdate jTweetUpdate) {
