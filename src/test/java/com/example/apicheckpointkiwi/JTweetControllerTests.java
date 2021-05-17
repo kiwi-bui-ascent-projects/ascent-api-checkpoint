@@ -117,4 +117,35 @@ public class JTweetControllerTests {
         mockMvc.perform(get("/tweets/4"))
                 .andExpect(status().isNoContent());
     }
+
+    @Test
+    void patchTweet_returnsTweet() throws Exception {
+        when(jTweetService.updateTweet(anyLong(), any(JTweetUpdate.class))).thenReturn(jTweet);
+
+        mockMvc.perform(patch("/tweets/4")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(jTweetUpdate)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(4));
+    }
+
+    @Test
+    void patchTweet_noContent_returns204() throws Exception {
+        when(jTweetService.updateTweet(anyLong(), any(JTweetUpdate.class))).thenReturn(null);
+
+        mockMvc.perform(patch("/tweets/4")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(jTweetUpdate)))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void patchTweet_invalidArg_returns400() throws Exception {
+        when(jTweetService.updateTweet(anyLong(), any(JTweetUpdate.class))).thenThrow(InvalidTweetException.class);
+
+        mockMvc.perform(patch("/tweets/4")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(jTweetUpdate)))
+                .andExpect(status().isBadRequest());
+    }
 }

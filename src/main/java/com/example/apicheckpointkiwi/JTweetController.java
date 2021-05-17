@@ -42,6 +42,14 @@ public class JTweetController {
         return jTweet == null ? ResponseEntity.noContent().build() : ResponseEntity.ok(jTweet);
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<JTweet> patchTweet(@PathVariable long id,
+                                             @RequestBody JTweetUpdate jTweetUpdate) {
+        JTweet jTweet = jTweetService.updateTweet(id, jTweetUpdate);
+
+        return jTweet == null ? ResponseEntity.noContent().build() : ResponseEntity.ok(jTweet);
+    }
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void invalidTweetExceptionHandler(InvalidTweetException e) {

@@ -3,6 +3,10 @@ package com.example.apicheckpointkiwi;
 public class JTweetUpdate {
     private String body;
 
+    public JTweetUpdate() {
+
+    }
+
     public JTweetUpdate(String body) {
         this.body = body;
     }

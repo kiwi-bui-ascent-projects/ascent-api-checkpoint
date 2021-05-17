@@ -20,4 +20,8 @@ public class JTweetService {
     public JTweet getTweet(long anyLong) {
         return null;
     }
+
+    public JTweet updateTweet(long anyLong, JTweetUpdate jTweetUpdate) {
+        return null;
+    }
 }
