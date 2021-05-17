@@ -4,22 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JTweets {
-    private List<JTweet> jTweetList;
+    private List<JTweet> tweets;
 
     public JTweets() {
-        this.jTweetList = new ArrayList<>();
+        this.tweets = new ArrayList<>();
     }
 
-    public JTweets(List<JTweet> jTweetList) {
-        this.jTweetList = jTweetList;
+    public JTweets(List<JTweet> tweets) {
+        this.tweets = tweets;
+    }
+
+    public List<JTweet> getTweets() {
+        return this.tweets;
     }
 
     public boolean isEmpty() {
-        return jTweetList.isEmpty();
+        return tweets.isEmpty();
     }
 
     public int getCount() {
-        return jTweetList.size();
+        return tweets.size();
     }
         
 }
