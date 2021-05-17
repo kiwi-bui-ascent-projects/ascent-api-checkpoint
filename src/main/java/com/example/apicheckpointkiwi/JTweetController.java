@@ -1,5 +1,6 @@
 package com.example.apicheckpointkiwi;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +16,9 @@ public class JTweetController {
     }
 
     @GetMapping
-    public JTweets getTweets() {
-        return jTweetService.getTweets();
+    public ResponseEntity<JTweets> getTweets() {
+        JTweets jTweets = jTweetService.getTweets();
+
+        return jTweets.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(jTweets);
     }
 }

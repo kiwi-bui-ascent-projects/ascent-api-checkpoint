@@ -44,4 +44,12 @@ public class JTweetControllerTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.tweets", hasSize(10)));
     }
+
+    @Test
+    void getTweets_noArgs_noContent_returns204() throws Exception {
+        when(jTweetService.getTweets()).thenReturn(new JTweets());
+
+        mockMvc.perform(get("/tweets"))
+                .andExpect(status().isNoContent());
+    }
 }
