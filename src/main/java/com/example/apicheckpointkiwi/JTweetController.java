@@ -1,10 +1,8 @@
 package com.example.apicheckpointkiwi;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/tweets")
@@ -17,7 +15,8 @@ public class JTweetController {
     }
 
     @GetMapping
-    public ResponseEntity<JTweets> getTweets(@RequestParam String author, @RequestParam String date) {
+    public ResponseEntity<JTweets> getTweets(@RequestParam (required = false) String author,
+                                             @RequestParam (required = false) String date) {
         JTweets jTweets;
 
         if (author == null && date == null) {
@@ -28,4 +27,18 @@ public class JTweetController {
 
         return jTweets.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(jTweets);
     }
+
+    @PostMapping
+    public ResponseEntity<JTweet> postTweet(@RequestBody JTweet jTweet) {
+        JTweet newTweet = jTweetService.addTweet(jTweet);
+
+        return ResponseEntity.ok(jTweet);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void invalidTweetExceptionHandler(InvalidTweetException e) {
+
+    }
+
 }

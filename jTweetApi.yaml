@@ -39,7 +39,7 @@ paths:
             schema:
               $ref: "#/components/schemas/tweet"
       responses:
-        202:
+        200:
           description: Tweet added
           content:
             application/json:

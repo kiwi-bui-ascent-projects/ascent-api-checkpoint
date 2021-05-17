@@ -43,8 +43,8 @@ public class JTweet {
         this.body = body;
     }
 
-    public LocalDate getLocalDate() {
-        return localDate;
+    public String getLocalDate() {
+        return localDate.toString();
     }
 
     public void setLocalDate(LocalDate localDate) {

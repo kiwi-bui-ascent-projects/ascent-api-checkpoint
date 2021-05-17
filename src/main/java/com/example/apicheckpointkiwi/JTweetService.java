@@ -12,4 +12,8 @@ public class JTweetService {
     public JTweets getTweets(String anyString, String anyString1) {
         return null;
     }
+
+    public JTweet addTweet(JTweet jTweet) {
+        return null;
+    }
 }
