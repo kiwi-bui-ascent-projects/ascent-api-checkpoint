@@ -36,17 +36,7 @@ jacocoTestCoverageVerification {
 				minimum = 0.9
 			}
 		}
-
-		rule {
-			enabled = false
-			element = 'CLASS'
-			includes = ['org.gradle.*']
-
-			limit {
-				counter = 'LINE'
-				value = 'TOTALCOUNT'
-				maximum = 0.3
-			}
-		}
 	}
 }
+
+check.dependsOn jacocoTestCoverageVerification
