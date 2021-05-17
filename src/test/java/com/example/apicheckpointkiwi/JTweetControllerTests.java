@@ -93,7 +93,7 @@ public class JTweetControllerTests {
     }
 
     @Test
-    void postTweet_invalidArg_returns400() throws Exception {
+    void postTweet_invalidArgs_returns400() throws Exception {
         when(jTweetService.addTweet(any(JTweet.class))).thenThrow(InvalidTweetException.class);
 
         mockMvc.perform(post("/tweets").contentType(MediaType.APPLICATION_JSON)
@@ -140,7 +140,7 @@ public class JTweetControllerTests {
     }
 
     @Test
-    void patchTweet_invalidArg_returns400() throws Exception {
+    void patchTweet_invalidArgs_returns400() throws Exception {
         when(jTweetService.updateTweet(anyLong(), any(JTweetUpdate.class))).thenThrow(InvalidTweetException.class);
 
         mockMvc.perform(patch("/tweets/4")
@@ -158,7 +158,7 @@ public class JTweetControllerTests {
     }
 
     @Test
-    void deleteTweet_invalidArg_returns400() throws Exception {
+    void deleteTweet_invalidArgs_returns400() throws Exception {
         doThrow(InvalidTweetException.class).when(jTweetService).deleteTweet(anyLong());
 
         mockMvc.perform(delete("/tweets/4"))

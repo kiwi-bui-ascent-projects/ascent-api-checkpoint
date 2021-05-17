@@ -20,11 +20,16 @@ public class JTweetService {
     }
 
     public JTweets getTweets(String author, String date) {
-        return null;
+        List<JTweet> tweets = jTweetsRepository.findByAuthorAndLocalDate(author, date);
+
+        return new JTweets(tweets);
     }
 
     public JTweet addTweet(JTweet jTweet) {
-        return null;
+        if (jTweet.getId() < 0 || jTweet.getAuthor() == "" || jTweet.getBody() == "") {
+            throw new InvalidTweetException("Invalid Tweet");
+        }
+        return jTweetsRepository.save(jTweet);
     }
 
     public JTweet getTweet(long id) {
