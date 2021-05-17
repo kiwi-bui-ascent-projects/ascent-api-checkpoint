@@ -9,7 +9,7 @@ public class JTweetService {
         return null;
     }
 
-    public JTweets getTweets(String anyString, String anyString1) {
+    public JTweets getTweets(String author, String date) {
         return null;
     }
 
@@ -17,11 +17,14 @@ public class JTweetService {
         return null;
     }
 
-    public JTweet getTweet(long anyLong) {
+    public JTweet getTweet(long id) {
         return null;
     }
 
-    public JTweet updateTweet(long anyLong, JTweetUpdate jTweetUpdate) {
+    public JTweet updateTweet(long id, JTweetUpdate jTweetUpdate) {
         return null;
+    }
+
+    public void deleteTweet(long id) {
     }
 }

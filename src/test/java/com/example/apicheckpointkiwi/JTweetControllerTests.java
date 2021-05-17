@@ -14,7 +14,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -146,6 +146,22 @@ public class JTweetControllerTests {
         mockMvc.perform(patch("/tweets/4")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(jTweetUpdate)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void deleteTweet_returns202() throws Exception {
+        mockMvc.perform(delete("/tweets/4"))
+                .andExpect(status().isAccepted());
+
+        verify(jTweetService).deleteTweet(anyLong());
+    }
+
+    @Test
+    void deleteTweet_invalidArg_returns400() throws Exception {
+        doThrow(InvalidTweetException.class).when(jTweetService).deleteTweet(anyLong());
+
+        mockMvc.perform(delete("/tweets/4"))
                 .andExpect(status().isBadRequest());
     }
 }

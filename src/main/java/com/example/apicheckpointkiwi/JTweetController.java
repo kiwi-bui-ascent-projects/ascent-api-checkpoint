@@ -50,6 +50,13 @@ public class JTweetController {
         return jTweet == null ? ResponseEntity.noContent().build() : ResponseEntity.ok(jTweet);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteTweet(@PathVariable long id) {
+        jTweetService.deleteTweet(id);
+
+        return ResponseEntity.accepted().build();
+    }
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void invalidTweetExceptionHandler(InvalidTweetException e) {
