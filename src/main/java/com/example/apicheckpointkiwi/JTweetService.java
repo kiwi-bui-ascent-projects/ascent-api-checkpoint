@@ -16,4 +16,8 @@ public class JTweetService {
     public JTweet addTweet(JTweet jTweet) {
         return null;
     }
+
+    public JTweet getTweet(long anyLong) {
+        return null;
+    }
 }

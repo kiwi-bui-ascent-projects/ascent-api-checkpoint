@@ -35,10 +35,16 @@ public class JTweetController {
         return ResponseEntity.ok(jTweet);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<JTweet> getTweet(@PathVariable long id) {
+        JTweet jTweet = jTweetService.getTweet(id);
+
+        return jTweet == null ? ResponseEntity.noContent().build() : ResponseEntity.ok(jTweet);
+    }
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void invalidTweetExceptionHandler(InvalidTweetException e) {
 
     }
-
 }

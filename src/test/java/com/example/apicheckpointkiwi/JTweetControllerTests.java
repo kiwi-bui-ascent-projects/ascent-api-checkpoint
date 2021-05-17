@@ -100,4 +100,21 @@ public class JTweetControllerTests {
                     .content(objectMapper.writeValueAsString(jTweet)))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    void getTweet_returnsTweet() throws Exception {
+        when(jTweetService.getTweet(anyLong())).thenReturn(jTweet);
+
+        mockMvc.perform(get("/tweets/4"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(4));
+    }
+
+    @Test
+    void getTweet_noContent_returns204() throws Exception {
+        when(jTweetService.getTweet(anyLong())).thenReturn(null);
+
+        mockMvc.perform(get("/tweets/4"))
+                .andExpect(status().isNoContent());
+    }
 }
