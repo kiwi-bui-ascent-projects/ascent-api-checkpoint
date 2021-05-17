@@ -1,0 +1,139 @@
+openapi: "3.0.2"
+info:
+  title: jTweet API
+  version: "1.0"
+servers:
+  - url: https://api.server.test/v1
+paths:
+  /tweets:
+    get:
+      summary: Search for all tweets with optional search parameters
+      description: Returns a list of all tweets by all authors, all tweets by an author, all tweets posted on a date, or 204 if no tweets are found
+      parameters:
+        - name: author
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: date
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/tweets"
+        '204':
+          description: No tweets found
+    post:
+      summary: Post a new tweet
+      description: Post a new tweet, and return tweet if successful, or 400 if tweet is invalid
+      requestBody:
+        description: Tweet that is being added
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/tweet"
+      responses:
+        202:
+          description: Tweet added
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/tweet"
+        400:
+          description: Invalid tweet
+  /tweets/{id}:
+    get:
+      summary: Search for a tweet by id
+      description: Returns a tweet by id, or no 204 if tweet not found
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/tweet"
+        '204':
+          description: Tweet not found found
+    patch:
+      summary: Update a tweet body by id
+      description: Updates a tweet by id, and returns tweet if successful, no 204 if target tweet is not found, or 400 if input is invalid
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Tweet body to be updated with
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/update"
+      responses:
+        200:
+          description: Tweet updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/tweet"
+        204:
+          description: No tweet found
+        400:
+          description: Invalid update
+    delete:
+      summary: Delete a tweet by id
+      description: Deletes a tweet by id, and returns no 202 if accepted, or 204 if no tweet is found
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+
+      responses:
+        202:
+          description: Tweet deleted
+        204:
+          description: No tweet found
+components:
+  schemas:
+    tweet:
+      required:
+        - id
+        - author
+        - body
+        - date
+      type: object
+      properties:
+        id:
+          type: integer
+        author:
+          type: string
+        body:
+          type: string
+        date:
+          type: string
+    tweets:
+      type: array
+      description: list of tweets
+      items:
+        $ref: "#/components/schemas/tweet"
+    update:
+      required:
+        - body
+      type: object
+      properties:
+        body:
+          type: string
