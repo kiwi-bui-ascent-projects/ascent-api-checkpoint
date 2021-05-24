@@ -31,6 +31,8 @@ public class JTweetServiceTests {
             add("rob");
         }
     };
+    long id = 4;
+    JTweetUpdate jTweetUpdate = new JTweetUpdate("This tweet has been updated");
 
     @BeforeEach
     void setUp() {
@@ -87,8 +89,6 @@ public class JTweetServiceTests {
 
     @Test
     void getTweet_returnsTweet() {
-        long id = 4;
-
         when(jTweetsRepository.findById(id)).thenReturn(java.util.Optional.ofNullable(jTweet));
 
         assertThat(jTweetService.getTweet(id)).isNotNull();
@@ -96,10 +96,23 @@ public class JTweetServiceTests {
 
     @Test
     void getTweet_noContent_returnsNull() {
-        long id = 4;
-
         when(jTweetsRepository.findById(id)).thenReturn(java.util.Optional.empty());
 
         assertThat(jTweetService.getTweet(id)).isEmpty();
+    }
+
+    @Test
+    void updateTweet_returnsTweet() {
+        when(jTweetsRepository.findById(id)).thenReturn(java.util.Optional.ofNullable(jTweet));
+        when(jTweetsRepository.save(any(JTweet.class))).thenReturn(jTweet);
+
+        assertThat(jTweetService.updateTweet(id, jTweetUpdate)).isNotNull();
+    }
+
+    @Test
+    void updateTweet_returnsNull() {
+        when(jTweetsRepository.findById(id)).thenReturn(java.util.Optional.empty());
+
+        assertThat(jTweetService.updateTweet(id, jTweetUpdate)).isNull();
     }
 }

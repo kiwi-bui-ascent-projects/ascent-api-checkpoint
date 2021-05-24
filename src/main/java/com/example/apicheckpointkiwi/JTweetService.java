@@ -38,6 +38,12 @@ public class JTweetService {
     }
 
     public JTweet updateTweet(long id, JTweetUpdate jTweetUpdate) {
+        Optional<JTweet> tweet = jTweetsRepository.findById(id);
+
+        if (tweet.isPresent()) {
+            return jTweetsRepository.save(tweet.get());
+        }
+
         return null;
     }
 
