@@ -47,14 +47,14 @@ public class JTweetServiceTests {
     }
 
     @Test
-    void getTweets_returnsTweets() {
+    void getTweets_no_Args_returnsTweets() {
         when(jTweetsRepository.findAll()).thenReturn(jTweets);
 
         assertThat(jTweetService.getTweets().isEmpty()).isFalse();
     }
 
     @Test
-    void getTweets_noContent_returnsEmptyList() {
+    void getTweets_noArgs_noContent_returnsEmptyList() {
         when(jTweetsRepository.findAll()).thenReturn(new ArrayList<>());
 
         assertThat(jTweetService.getTweets().isEmpty()).isTrue();
