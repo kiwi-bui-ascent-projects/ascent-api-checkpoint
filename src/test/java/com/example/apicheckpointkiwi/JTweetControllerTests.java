@@ -103,7 +103,7 @@ public class JTweetControllerTests {
 
     @Test
     void getTweet_returnsTweet() throws Exception {
-        when(jTweetService.getTweet(anyLong())).thenReturn(java.util.Optional.ofNullable(jTweet));
+        when(jTweetService.getTweet(anyLong())).thenReturn(jTweet);
 
         mockMvc.perform(get("/tweets/4"))
                 .andExpect(status().isOk())
@@ -127,16 +127,6 @@ public class JTweetControllerTests {
                     .content(objectMapper.writeValueAsString(jTweetUpdate)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(4));
-    }
-
-    @Test
-    void patchTweet_noContent_returns204() throws Exception {
-        when(jTweetService.updateTweet(anyLong(), any(JTweetUpdate.class))).thenReturn(null);
-
-        mockMvc.perform(patch("/tweets/4")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(jTweetUpdate)))
-                .andExpect(status().isNoContent());
     }
 
     @Test

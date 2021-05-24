@@ -88,8 +88,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/tweet"
-        204:
-          description: No tweet found
         400:
           description: Invalid update
     delete:
@@ -105,8 +103,8 @@ paths:
       responses:
         202:
           description: Tweet deleted
-        204:
-          description: No tweet found
+        400:
+          description: Invalid delete
 components:
   schemas:
     tweet:

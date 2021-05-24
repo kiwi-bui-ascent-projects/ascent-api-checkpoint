@@ -38,8 +38,8 @@ public class JTweetController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<JTweet>> getTweet(@PathVariable long id) {
-        Optional<JTweet> jTweet = jTweetService.getTweet(id);
+    public ResponseEntity<JTweet> getTweet(@PathVariable long id) {
+        JTweet jTweet = jTweetService.getTweet(id);
 
         return jTweet == null ? ResponseEntity.noContent().build() : ResponseEntity.ok(jTweet);
     }
@@ -47,9 +47,7 @@ public class JTweetController {
     @PatchMapping("/{id}")
     public ResponseEntity<JTweet> patchTweet(@PathVariable long id,
                                              @RequestBody JTweetUpdate jTweetUpdate) {
-        JTweet jTweet = jTweetService.updateTweet(id, jTweetUpdate);
-
-        return jTweet == null ? ResponseEntity.noContent().build() : ResponseEntity.ok(jTweet);
+        return ResponseEntity.ok(jTweetService.updateTweet(id, jTweetUpdate));
     }
 
     @DeleteMapping("/{id}")

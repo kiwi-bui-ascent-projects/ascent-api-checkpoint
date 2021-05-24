@@ -13,6 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,6 +32,8 @@ public class JTweetServiceTests {
             add("rob");
         }
     };
+    long id = 4;
+    JTweetUpdate jTweetUpdate = new JTweetUpdate("This tweet has been updated");
 
     @BeforeEach
     void setUp() {
@@ -87,8 +90,6 @@ public class JTweetServiceTests {
 
     @Test
     void getTweet_returnsTweet() {
-        long id = 4;
-
         when(jTweetsRepository.findById(id)).thenReturn(java.util.Optional.ofNullable(jTweet));
 
         assertThat(jTweetService.getTweet(id)).isNotNull();
@@ -96,10 +97,41 @@ public class JTweetServiceTests {
 
     @Test
     void getTweet_noContent_returnsNull() {
-        long id = 4;
-
         when(jTweetsRepository.findById(id)).thenReturn(java.util.Optional.empty());
 
-        assertThat(jTweetService.getTweet(id)).isEmpty();
+        assertThat(jTweetService.getTweet(id)).isNull();
+    }
+
+    @Test
+    void updateTweet_returnsTweet() {
+        when(jTweetsRepository.findById(id)).thenReturn(java.util.Optional.ofNullable(jTweet));
+        when(jTweetsRepository.save(any(JTweet.class))).thenReturn(jTweet);
+
+        assertThat(jTweetService.updateTweet(id, jTweetUpdate)).isNotNull();
+    }
+
+    @Test
+    void updateTweet_badRequest_throwsInvalidTweetException() {
+        assertThatThrownBy(() -> {
+            jTweetService.updateTweet(1, new JTweetUpdate(""));
+        }).isInstanceOf(InvalidTweetException.class);
+    }
+
+    @Test
+    void deleteTweet_success() {
+        when(jTweetsRepository.findById(id)).thenReturn(java.util.Optional.ofNullable(jTweet));
+
+        jTweetService.deleteTweet(id);
+
+        verify(jTweetsRepository).delete(any(JTweet.class));
+    }
+
+    @Test
+    void deleteTweet_noContent_throwsInvalidTweetException() {
+        when(jTweetsRepository.findById(id)).thenReturn(java.util.Optional.empty());
+
+        assertThatThrownBy(() -> {
+            jTweetService.deleteTweet(id);
+        }).isInstanceOf(InvalidTweetException.class);
     }
 }
