@@ -32,9 +32,7 @@ public class JTweetController {
 
     @PostMapping
     public ResponseEntity<JTweet> postTweet(@RequestBody JTweet jTweet) {
-        JTweet newTweet = jTweetService.addTweet(jTweet);
-
-        return ResponseEntity.ok(jTweet);
+        return ResponseEntity.ok(jTweetService.addTweet(jTweet));
     }
 
     @GetMapping("/{id}")

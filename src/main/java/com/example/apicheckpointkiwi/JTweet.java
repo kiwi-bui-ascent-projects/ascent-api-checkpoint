@@ -15,7 +15,7 @@ public class JTweet {
     private LocalDate localDate;
 
     public JTweet() {
-
+        this.localDate = LocalDate.now();
     }
 
     public JTweet(long id, String author, String body) {

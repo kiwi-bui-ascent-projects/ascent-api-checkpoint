@@ -49,6 +49,7 @@ public class JTweetService {
         if (!jTweet.isPresent() || jTweetUpdate.getBody().equals("")) {
             throw new InvalidTweetException("Invalid update");
         } else {
+            jTweet.get().setBody(jTweetUpdate.getBody());
             return jTweetsRepository.save(jTweet.get());
         }
     }
