@@ -38,13 +38,17 @@ public class JTweetService {
     }
 
     public JTweet updateTweet(long id, JTweetUpdate jTweetUpdate) {
-        Optional<JTweet> tweet = jTweetsRepository.findById(id);
+        if (id < 0 || jTweetUpdate.getBody().equals("")) {
+            throw new InvalidTweetException("Invalid request");
+        } else {
+            Optional<JTweet> tweet = jTweetsRepository.findById(id);
 
-        if (tweet.isPresent()) {
-            return jTweetsRepository.save(tweet.get());
+            if (tweet.isPresent()) {
+                return jTweetsRepository.save(tweet.get());
+            }
+
+            return null;
         }
-
-        return null;
     }
 
     public void deleteTweet(long id) {

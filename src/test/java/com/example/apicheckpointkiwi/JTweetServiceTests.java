@@ -110,9 +110,20 @@ public class JTweetServiceTests {
     }
 
     @Test
-    void updateTweet_returnsNull() {
+    void updateTweet_noContent_returnsNull() {
         when(jTweetsRepository.findById(id)).thenReturn(java.util.Optional.empty());
 
         assertThat(jTweetService.updateTweet(id, jTweetUpdate)).isNull();
+    }
+
+    @Test
+    void updateTweet_badRequest_throwsInvalidTweetException() {
+        assertThatThrownBy(() -> {
+            jTweetService.updateTweet(-1, jTweetUpdate);
+        }).isInstanceOf(InvalidTweetException.class);
+
+        assertThatThrownBy(() -> {
+            jTweetService.updateTweet(1, new JTweetUpdate(""));
+        }).isInstanceOf(InvalidTweetException.class);
     }
 }
