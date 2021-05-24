@@ -13,6 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -98,7 +99,7 @@ public class JTweetServiceTests {
     void getTweet_noContent_returnsNull() {
         when(jTweetsRepository.findById(id)).thenReturn(java.util.Optional.empty());
 
-        assertThat(jTweetService.getTweet(id)).isEmpty();
+        assertThat(jTweetService.getTweet(id)).isNull();
     }
 
     @Test
@@ -110,20 +111,27 @@ public class JTweetServiceTests {
     }
 
     @Test
-    void updateTweet_noContent_returnsNull() {
-        when(jTweetsRepository.findById(id)).thenReturn(java.util.Optional.empty());
-
-        assertThat(jTweetService.updateTweet(id, jTweetUpdate)).isNull();
+    void updateTweet_badRequest_throwsInvalidTweetException() {
+        assertThatThrownBy(() -> {
+            jTweetService.updateTweet(1, new JTweetUpdate(""));
+        }).isInstanceOf(InvalidTweetException.class);
     }
 
     @Test
-    void updateTweet_badRequest_throwsInvalidTweetException() {
-        assertThatThrownBy(() -> {
-            jTweetService.updateTweet(-1, jTweetUpdate);
-        }).isInstanceOf(InvalidTweetException.class);
+    void deleteTweet_success() {
+        when(jTweetsRepository.findById(id)).thenReturn(java.util.Optional.ofNullable(jTweet));
+
+        jTweetService.deleteTweet(id);
+
+        verify(jTweetsRepository).delete(any(JTweet.class));
+    }
+
+    @Test
+    void deleteTweet_noContent_throwsInvalidTweetException() {
+        when(jTweetsRepository.findById(id)).thenReturn(java.util.Optional.empty());
 
         assertThatThrownBy(() -> {
-            jTweetService.updateTweet(1, new JTweetUpdate(""));
+            jTweetService.deleteTweet(id);
         }).isInstanceOf(InvalidTweetException.class);
     }
 }

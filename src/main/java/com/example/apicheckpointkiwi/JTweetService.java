@@ -33,24 +33,33 @@ public class JTweetService {
         return jTweetsRepository.save(jTweet);
     }
 
-    public Optional<JTweet> getTweet(long id) {
-        return jTweetsRepository.findById(id);
-    }
+    public JTweet getTweet(long id) {
+        Optional<JTweet> jTweet = jTweetsRepository.findById(id);
 
-    public JTweet updateTweet(long id, JTweetUpdate jTweetUpdate) {
-        if (id < 0 || jTweetUpdate.getBody().equals("")) {
-            throw new InvalidTweetException("Invalid request");
+        if (jTweet.isPresent()) {
+            return jTweet.get();
         } else {
-            Optional<JTweet> tweet = jTweetsRepository.findById(id);
-
-            if (tweet.isPresent()) {
-                return jTweetsRepository.save(tweet.get());
-            }
-
             return null;
         }
     }
 
+    public JTweet updateTweet(long id, JTweetUpdate jTweetUpdate) {
+        Optional<JTweet> jTweet = jTweetsRepository.findById(id);
+
+        if (!jTweet.isPresent() || jTweetUpdate.getBody().equals("")) {
+            throw new InvalidTweetException("Invalid update");
+        } else {
+            return jTweetsRepository.save(jTweet.get());
+        }
+    }
+
     public void deleteTweet(long id) {
+        Optional<JTweet> jTweet = jTweetsRepository.findById(id);
+
+        if (jTweet.isPresent()) {
+            jTweetsRepository.delete(jTweet.get());
+        } else {
+            throw new InvalidTweetException("Invalid delete");
+        }
     }
 }
