@@ -1,11 +1,17 @@
 package com.example.apicheckpointkiwi;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "j_tweets")
 public class JTweet {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String author;
     private String body;
+    @Column(name = "timestamp")
     private LocalDate localDate;
 
     public JTweet() {
