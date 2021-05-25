@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @RestController
@@ -32,9 +33,7 @@ public class JTweetController {
 
     @PostMapping
     public ResponseEntity<JTweet> postTweet(@RequestBody JTweet jTweet) {
-        JTweet newTweet = jTweetService.addTweet(jTweet);
-
-        return ResponseEntity.ok(jTweet);
+        return ResponseEntity.ok(jTweetService.addTweet(jTweet));
     }
 
     @GetMapping("/{id}")

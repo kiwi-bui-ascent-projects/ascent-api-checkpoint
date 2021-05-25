@@ -1,22 +1,28 @@
 package com.example.apicheckpointkiwi;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "j_tweets")
 public class JTweet {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String author;
     private String body;
-    private LocalDate localDate;
+    @Column(name = "timestamp")
+    private String localDate;
 
     public JTweet() {
-
+        this.localDate = LocalDate.now().toString();
     }
 
     public JTweet(long id, String author, String body) {
         this.id = id;
         this.author = author;
         this.body = body;
-        this.localDate = LocalDate.now();
+        this.localDate = LocalDate.now().toString();
     }
 
     public long getId() {
@@ -44,10 +50,10 @@ public class JTweet {
     }
 
     public String getLocalDate() {
-        return localDate.toString();
+        return this.localDate;
     }
 
-    public void setLocalDate(LocalDate localDate) {
+    public void setLocalDate(String localDate) {
         this.localDate = localDate;
     }
 }

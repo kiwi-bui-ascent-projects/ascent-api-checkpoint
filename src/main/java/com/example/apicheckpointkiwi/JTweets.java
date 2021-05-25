@@ -1,5 +1,7 @@
 package com.example.apicheckpointkiwi;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +20,7 @@ public class JTweets {
         return this.tweets;
     }
 
+    @JsonIgnore
     public boolean isEmpty() {
         return tweets.isEmpty();
     }
