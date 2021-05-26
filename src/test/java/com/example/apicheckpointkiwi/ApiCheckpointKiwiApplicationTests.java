@@ -1,13 +1,10 @@
 package com.example.apicheckpointkiwi;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.coyote.Response;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +27,8 @@ class ApiCheckpointKiwiApplicationTests {
 			add("rob");
 		}
 	};
+	JTweet jTweet = new JTweet(4, "kiwi", "Hello World");
+
 
 	@BeforeEach
 	void setUp() {
@@ -67,14 +66,50 @@ class ApiCheckpointKiwiApplicationTests {
 		ResponseEntity<JTweets> response = testRestTemplate.getForEntity("/tweets", JTweets.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+		assertThat(response.getBody()).isNull();
 	}
 
+	// Query needs to be changed to current date to pass this test
 	@Test
 	void getAutos_withArgs_returnsTweets() {
-		ResponseEntity<JTweets> response = testRestTemplate.getForEntity("/tweets?author=rob&date=2021-05-23",
+		ResponseEntity<JTweets> response = testRestTemplate.getForEntity("/tweets?author=rob&date=2021-05-26",
 				JTweets.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(response.getBody().getTweets().size()).isEqualTo(5);
+	}
+
+	@Test
+	void getAutos_withArgs_noContent_returns204() {
+		jTweetsRepository.deleteAll();
+
+		ResponseEntity<JTweets> response = testRestTemplate.getForEntity("/tweets?author=rob&date=2021-05-26",
+				JTweets.class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+		assertThat(response.getBody()).isNull();
+	}
+
+	@Test
+	void postTweet_returnsTweet() {
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+		HttpEntity<JTweet> request = new HttpEntity<>(jTweet, headers);
+
+		ResponseEntity<JTweet> response = testRestTemplate.postForEntity("/tweets", request, JTweet.class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(response.getBody().getAuthor()).isEqualTo("kiwi");
+	}
+
+	@Test
+	void postTweet_invalidArgs_returns400() {
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+		HttpEntity<JTweet> request = new HttpEntity<>(new JTweet(), headers);
+
+		ResponseEntity<JTweet> response = testRestTemplate.postForEntity("/tweets", request, JTweet.class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 	}
 }
