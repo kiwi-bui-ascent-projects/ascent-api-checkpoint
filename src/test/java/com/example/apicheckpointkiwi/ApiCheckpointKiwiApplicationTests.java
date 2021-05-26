@@ -35,7 +35,7 @@ class ApiCheckpointKiwiApplicationTests {
 		jTweets = new ArrayList<>();
 
 		for (int i = 0; i < 10; i++) {
-			jTweets.add(new JTweet(i, authors.get(i % 2), "Tweet" + i));
+			jTweets.add(new JTweet(authors.get(i % 2), "Tweet" + i));
 		}
 
 		jTweetsRepository.saveAll(jTweets);
@@ -111,5 +111,25 @@ class ApiCheckpointKiwiApplicationTests {
 		ResponseEntity<JTweet> response = testRestTemplate.postForEntity("/tweets", request, JTweet.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+	}
+
+	// Need to get list to get ID as the sequence is persistent through deleteAll()
+	@Test
+	void getTweet_returnsTweet() {
+		List<JTweet> currentTweets = jTweetsRepository.findAll();
+		JTweets currentJTweets = new JTweets(currentTweets);
+
+		ResponseEntity<JTweet> response = testRestTemplate.getForEntity("/tweets/" +
+				currentJTweets.getTweets().get(0).getId(), JTweet.class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(response.getBody().getAuthor()).isEqualTo("peter");
+	}
+
+	@Test
+	void getTweet_noContent_returns204() {
+		ResponseEntity<JTweet> response = testRestTemplate.getForEntity("/tweets/999", JTweet.class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
 	}
 }

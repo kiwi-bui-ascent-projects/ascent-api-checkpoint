@@ -18,6 +18,12 @@ public class JTweet {
         this.localDate = LocalDate.now().toString();
     }
 
+    public JTweet(String author, String body) {
+        this.author = author;
+        this.body = body;
+        this.localDate = LocalDate.now().toString();
+    }
+
     public JTweet(long id, String author, String body) {
         this.id = id;
         this.author = author;
@@ -55,6 +61,18 @@ public class JTweet {
 
     public void setLocalDate(String localDate) {
         this.localDate = localDate;
+    }
+
+    @Override
+    public String toString() {
+        String output = "{\n" +
+                "  \"id\": \"" + this.id + "\"\n" +
+                "  \"author\": \"" + this.author + "\"\n" +
+                "  \"body\": \"" + this.body + "\"\n" +
+                "  \"timestamp\": \"" + this.localDate + "\"\n" +
+                "}";
+
+        return output;
     }
 }
 

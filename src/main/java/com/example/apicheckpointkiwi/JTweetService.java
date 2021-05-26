@@ -28,7 +28,7 @@ public class JTweetService {
     }
 
     public JTweet addTweet(JTweet jTweet) {
-        if (jTweet.getId() < 0 || jTweet.getAuthor() == "" || jTweet.getBody() == "" ||
+        if (jTweet.getId() < 1 || jTweet.getAuthor() == "" || jTweet.getBody() == "" ||
         jTweet.getAuthor() == null || jTweet.getBody() == null) {
             throw new InvalidTweetException("Invalid Tweet");
         }
