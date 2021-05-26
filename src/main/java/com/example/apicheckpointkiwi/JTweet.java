@@ -63,16 +63,16 @@ public class JTweet {
         this.localDate = localDate;
     }
 
-    @Override
-    public String toString() {
-        String output = "{\n" +
-                "  \"id\": \"" + this.id + "\"\n" +
-                "  \"author\": \"" + this.author + "\"\n" +
-                "  \"body\": \"" + this.body + "\"\n" +
-                "  \"timestamp\": \"" + this.localDate + "\"\n" +
-                "}";
-
-        return output;
-    }
+//    @Override
+//    public String toString() {
+//        String output = "{\n" +
+//                "  \"id\": \"" + this.id + "\"\n" +
+//                "  \"author\": \"" + this.author + "\"\n" +
+//                "  \"body\": \"" + this.body + "\"\n" +
+//                "  \"timestamp\": \"" + this.localDate + "\"\n" +
+//                "}";
+//
+//        return output;
+//    }
 }
 

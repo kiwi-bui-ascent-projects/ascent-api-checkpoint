@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,15 +21,24 @@ class ApiCheckpointKiwiApplicationTests {
 	@Autowired
 	JTweetsRepository jTweetsRepository;
 
-	List<JTweet> jTweets;
-	List<String> authors = new ArrayList<String>() {
-		{
-			add("peter");
-			add("rob");
-		}
-	};
-	JTweet jTweet = new JTweet(4, "kiwi", "Hello World");
+	private static HttpHeaders headers;
+	private static JTweet jTweet;
+	private static final List<String> authors = new ArrayList<String>();
 
+	List<JTweet> jTweets;
+	Long id;
+	HttpEntity<JTweetUpdate> request;
+
+	@BeforeAll
+	public static void before() {
+		headers = new HttpHeaders();
+		headers.set("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+
+		jTweet = new JTweet(4, "kiwi", "Hello World");
+
+		authors.add("peter");
+		authors.add("rob");
+	}
 
 	@BeforeEach
 	void setUp() {
@@ -38,7 +48,8 @@ class ApiCheckpointKiwiApplicationTests {
 			jTweets.add(new JTweet(authors.get(i % 2), "Tweet" + i));
 		}
 
-		jTweetsRepository.saveAll(jTweets);
+		jTweets = jTweetsRepository.saveAll(jTweets);
+		id = jTweets.get(0).getId();
 	}
 
 	@AfterEach
@@ -69,11 +80,10 @@ class ApiCheckpointKiwiApplicationTests {
 		assertThat(response.getBody()).isNull();
 	}
 
-	// Query needs to be changed to current date to pass this test
 	@Test
 	void getAutos_withArgs_returnsTweets() {
-		ResponseEntity<JTweets> response = testRestTemplate.getForEntity("/tweets?author=rob&date=2021-05-26",
-				JTweets.class);
+		ResponseEntity<JTweets> response = testRestTemplate.getForEntity("/tweets?author=rob&date=" +
+						LocalDate.now(), JTweets.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(response.getBody().getTweets().size()).isEqualTo(5);
@@ -92,8 +102,6 @@ class ApiCheckpointKiwiApplicationTests {
 
 	@Test
 	void postTweet_returnsTweet() {
-		HttpHeaders headers = new HttpHeaders();
-		headers.set("Content-Type", MediaType.APPLICATION_JSON_VALUE);
 		HttpEntity<JTweet> request = new HttpEntity<>(jTweet, headers);
 
 		ResponseEntity<JTweet> response = testRestTemplate.postForEntity("/tweets", request, JTweet.class);
@@ -104,8 +112,6 @@ class ApiCheckpointKiwiApplicationTests {
 
 	@Test
 	void postTweet_invalidArgs_returns400() {
-		HttpHeaders headers = new HttpHeaders();
-		headers.set("Content-Type", MediaType.APPLICATION_JSON_VALUE);
 		HttpEntity<JTweet> request = new HttpEntity<>(new JTweet(), headers);
 
 		ResponseEntity<JTweet> response = testRestTemplate.postForEntity("/tweets", request, JTweet.class);
@@ -113,14 +119,9 @@ class ApiCheckpointKiwiApplicationTests {
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 	}
 
-	// Need to get list to get ID as the sequence is persistent through deleteAll()
 	@Test
 	void getTweet_returnsTweet() {
-		List<JTweet> currentTweets = jTweetsRepository.findAll();
-		JTweets currentJTweets = new JTweets(currentTweets);
-
-		ResponseEntity<JTweet> response = testRestTemplate.getForEntity("/tweets/" +
-				currentJTweets.getTweets().get(0).getId(), JTweet.class);
+		ResponseEntity<JTweet> response = testRestTemplate.getForEntity("/tweets/" + id, JTweet.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(response.getBody().getAuthor()).isEqualTo("peter");
@@ -131,5 +132,26 @@ class ApiCheckpointKiwiApplicationTests {
 		ResponseEntity<JTweet> response = testRestTemplate.getForEntity("/tweets/999", JTweet.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+	}
+
+	@Test
+	void patchTweet_returnsTweet() {
+		request = new HttpEntity<>(new JTweetUpdate("Hello Spring"), headers);
+
+		ResponseEntity<JTweet> response = testRestTemplate.exchange("/tweets/" + id, HttpMethod.PATCH,
+				request, JTweet.class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(response.getBody().getBody()).isEqualTo("Hello Spring");
+	}
+
+	@Test
+	void patchTweet_invalidArgs_returns400() {
+		request = new HttpEntity<>(new JTweetUpdate(""), headers);
+
+		ResponseEntity<JTweet> response = testRestTemplate.exchange("/tweets/" + id, HttpMethod.PATCH,
+				request, JTweet.class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 	}
 }
