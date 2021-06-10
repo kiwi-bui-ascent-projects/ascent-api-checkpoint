@@ -162,4 +162,12 @@ class ApiCheckpointKiwiApplicationTests {
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
 	}
+
+	@Test
+	void deleteTweet_returns400() {
+		ResponseEntity<Void> response = testRestTemplate.exchange("/tweets/$4", HttpMethod.DELETE,
+				new HttpEntity<>(new HttpHeaders()), Void.class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+	}
 }
