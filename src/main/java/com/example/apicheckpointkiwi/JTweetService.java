@@ -2,6 +2,7 @@ package com.example.apicheckpointkiwi;
 
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +28,9 @@ public class JTweetService {
     }
 
     public JTweet addTweet(JTweet jTweet) {
-        if (jTweet.getId() < 0 || jTweet.getAuthor() == "" || jTweet.getBody() == "") {
+        System.out.println(jTweet.getId());
+        if (jTweet.getAuthor() == "" || jTweet.getBody() == "" ||
+        jTweet.getAuthor() == null || jTweet.getBody() == null) {
             throw new InvalidTweetException("Invalid Tweet");
         }
         return jTweetsRepository.save(jTweet);
@@ -49,6 +52,7 @@ public class JTweetService {
         if (!jTweet.isPresent() || jTweetUpdate.getBody().equals("")) {
             throw new InvalidTweetException("Invalid update");
         } else {
+            jTweet.get().setBody(jTweetUpdate.getBody());
             return jTweetsRepository.save(jTweet.get());
         }
     }
