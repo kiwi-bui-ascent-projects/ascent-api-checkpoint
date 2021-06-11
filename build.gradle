@@ -16,10 +16,11 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.25'
 	compile('org.apache.httpcomponents:httpclient:4.5.3')
-	runtimeOnly 'com.h2database:h2'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-}
+	runtimeOnly 'mysql:mysql-connector-java'
+	testRuntimeOnly 'com.h2database:h2'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'}
 
 test {
 	useJUnitPlatform()
