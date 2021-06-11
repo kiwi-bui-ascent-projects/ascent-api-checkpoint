@@ -21,7 +21,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(JTweetController.class)
 public class JTweetControllerTests {
-
     @Autowired
     MockMvc mockMvc;
 

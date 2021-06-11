@@ -28,5 +28,4 @@ public class JTweets {
     public int getCount() {
         return tweets.size();
     }
-        
 }
