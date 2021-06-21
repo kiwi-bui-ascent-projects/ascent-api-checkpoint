@@ -1,4 +1,4 @@
-package com.example.apicheckpointkiwi;
+package com.example.apicheckpointkiwi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

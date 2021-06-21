@@ -1,4 +1,4 @@
-package com.example.apicheckpointkiwi;
+package com.example.apicheckpointkiwi.model;
 
 public class JTweetUpdate {
     private String body;

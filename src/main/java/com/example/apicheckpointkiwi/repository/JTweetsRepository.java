@@ -1,5 +1,6 @@
-package com.example.apicheckpointkiwi;
+package com.example.apicheckpointkiwi.repository;
 
+import com.example.apicheckpointkiwi.model.JTweet;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,5 +1,10 @@
-package com.example.apicheckpointkiwi;
+package com.example.apicheckpointkiwi.service;
 
+import com.example.apicheckpointkiwi.model.JTweetUpdate;
+import com.example.apicheckpointkiwi.repository.JTweetsRepository;
+import com.example.apicheckpointkiwi.exception.InvalidTweetException;
+import com.example.apicheckpointkiwi.model.JTweet;
+import com.example.apicheckpointkiwi.model.JTweets;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

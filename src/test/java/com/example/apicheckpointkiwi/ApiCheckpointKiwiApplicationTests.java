@@ -1,5 +1,9 @@
 package com.example.apicheckpointkiwi;
 
+import com.example.apicheckpointkiwi.model.JTweet;
+import com.example.apicheckpointkiwi.model.JTweetUpdate;
+import com.example.apicheckpointkiwi.model.JTweets;
+import com.example.apicheckpointkiwi.repository.JTweetsRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

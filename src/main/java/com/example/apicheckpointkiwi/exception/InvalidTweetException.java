@@ -1,4 +1,4 @@
-package com.example.apicheckpointkiwi;
+package com.example.apicheckpointkiwi.exception;
 
 public class InvalidTweetException extends RuntimeException {
     public InvalidTweetException(String message) {
