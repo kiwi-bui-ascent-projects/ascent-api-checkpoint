@@ -1,5 +1,10 @@
-package com.example.apicheckpointkiwi;
+package com.example.apicheckpointkiwi.controller;
 
+import com.example.apicheckpointkiwi.exception.InvalidTweetException;
+import com.example.apicheckpointkiwi.model.JTweet;
+import com.example.apicheckpointkiwi.model.JTweetUpdate;
+import com.example.apicheckpointkiwi.model.JTweets;
+import com.example.apicheckpointkiwi.service.JTweetService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +26,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(JTweetController.class)
 public class JTweetControllerTests {
-
     @Autowired
     MockMvc mockMvc;
 

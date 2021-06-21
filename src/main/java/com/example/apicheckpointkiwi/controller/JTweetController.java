@@ -1,16 +1,17 @@
-package com.example.apicheckpointkiwi;
+package com.example.apicheckpointkiwi.controller;
 
+import com.example.apicheckpointkiwi.service.JTweetService;
+import com.example.apicheckpointkiwi.model.JTweetUpdate;
+import com.example.apicheckpointkiwi.model.JTweets;
+import com.example.apicheckpointkiwi.exception.InvalidTweetException;
+import com.example.apicheckpointkiwi.model.JTweet;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/tweets")
 public class JTweetController {
-
     JTweetService jTweetService;
 
     public JTweetController(JTweetService jTweetService) {
@@ -50,7 +51,7 @@ public class JTweetController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteTweet(@PathVariable long id) {
+    public ResponseEntity<Void> deleteTweet(@PathVariable long id) {
         jTweetService.deleteTweet(id);
 
         return ResponseEntity.accepted().build();
@@ -58,7 +59,5 @@ public class JTweetController {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public void invalidTweetExceptionHandler(InvalidTweetException e) {
-
-    }
+    public void invalidTweetExceptionHandler(InvalidTweetException e) {}
 }

@@ -1,11 +1,9 @@
-package com.example.apicheckpointkiwi;
+package com.example.apicheckpointkiwi.model;
 
 public class JTweetUpdate {
     private String body;
 
-    public JTweetUpdate() {
-
-    }
+    public JTweetUpdate() {}
 
     public JTweetUpdate(String body) {
         this.body = body;

@@ -1,4 +1,4 @@
-package com.example.apicheckpointkiwi;
+package com.example.apicheckpointkiwi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -28,5 +28,4 @@ public class JTweets {
     public int getCount() {
         return tweets.size();
     }
-        
 }

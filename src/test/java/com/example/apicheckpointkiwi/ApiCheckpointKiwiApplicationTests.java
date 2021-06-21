@@ -1,10 +1,15 @@
 package com.example.apicheckpointkiwi;
 
+import com.example.apicheckpointkiwi.model.JTweet;
+import com.example.apicheckpointkiwi.model.JTweetUpdate;
+import com.example.apicheckpointkiwi.model.JTweets;
+import com.example.apicheckpointkiwi.repository.JTweetsRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.test.context.TestPropertySource;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -12,9 +17,9 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@TestPropertySource(locations= "classpath:application-test.properties")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class ApiCheckpointKiwiApplicationTests {
-
 	@Autowired
 	TestRestTemplate testRestTemplate;
 
